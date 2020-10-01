@@ -20,7 +20,7 @@ int main() {
 		cout << "The equation has no solutions because Delta is negative." << endl;
 		return 0;	
 	} else if (delta == 0) {
-		int x = (-b)/(2*a);
+		float x = (-b)/(2*a);
 		cout << "The equation has one solution: " << x << " with m = 2." << endl;
 		return 0;
 	}
