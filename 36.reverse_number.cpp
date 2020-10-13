@@ -10,7 +10,7 @@ void reverse(int n) {
 		n/=10;
 		ris += h+('0'-0);
 	}
-	cout << "Here it is the reverted number: " << ris << endl;
+	cout << "Here is the reverted number: " << ris << endl;
 	return;
 }
 
