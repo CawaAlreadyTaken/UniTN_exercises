@@ -16,5 +16,5 @@ int main() {
 	}
 	if (tot == 1) cout << "Into the two random generated arrays, there was 1 pair of equal numbers (at the same index)." << endl;
 	else cout << "Into the two random generated arrays, there were " << tot << " pairs of equal numbers (at the same indexes)." << endl;
-return 0;
+	return 0;
 }

@@ -22,5 +22,5 @@ int main() {
 	}
 	cout << endl;
 	cout << "Max was " << max_ << ", min was " << min_ << " and mean was " << avg/10 << "." << endl;
-return 0;
+	return 0;
 }

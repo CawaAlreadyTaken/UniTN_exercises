@@ -31,5 +31,5 @@ int main() {
 		cout << new_a[i] << " ";
 	}
 	cout << endl;
-return 0;
+	return 0;
 }
