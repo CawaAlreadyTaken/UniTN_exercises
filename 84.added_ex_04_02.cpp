@@ -2,7 +2,7 @@
 
 using namespace std;
 
-long long cache[100][100];
+long long cache[10000][10000];
 
 long long recursive_pascal(int c, int l) {
 	long long return_;
@@ -28,8 +28,8 @@ int main() {
 		cout << "l must be greater than 0.";
 		return -1;
 	}
-	for (int i = 0; i < 100; i++) {
-		for (int j = 0; j < 100; j++) {
+	for (int i = 0; i < 10000; i++) {
+		for (int j = 0; j < 10000; j++) {
 			cache[i][j] = -1;
 		}
 	}
