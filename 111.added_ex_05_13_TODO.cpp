@@ -2,37 +2,28 @@
 
 using namespace std;
 
-int recursive_seq_find(int a[], int n, int index) {
-	int return_;
-	if (index >= 10) {
-		return_ = -1;
-	} else if (a[index] == n) {
-		return_ = index;	
-	} else {
-		return_ = recursive_seq_find(a, n, index+1);
-	}
-	return return_;
+int alg_complement(int a[], int row, int column) {
+	return pow(-1, row+column)*determinant(a, row+1, 
 }
 
 int main() {
 	srand(time(NULL));
-	cout << "This is the array." << endl;
+	cout << "This is the matrix:" << endl;
 	int a[10];
 	for (int i = 0; i < 10; i++) {
-		a[i] = random()%10;
+		for (int j = 0; j < 10; j++) {
+			a[i][j] = random()%10;
+		}
 	}
 	for (int i = 0; i < 10; i++) {
-		cout << a[i] << " ";
+		for (int j = 0; j < 10; j++) {
+			cout << a[i][j] << " ";
+		} cout << endl;
 	}
 	cout << endl;
-	cout << "Give me the number you want to search [0-9]: ";
-	int n;
-	cin >> n;
-	int found = recursive_seq_find(a, n, 0);
-	if (found == -1) {
-		cout << "Could not find your number." << endl;
-	} else {
-		cout << "Number " << n << " was found at index " << found << "." << endl;
+	int det = 0;
+	for (int i = 0; i < 10; i++) {
+		det+=a[0][i]*alg_complement(a, 0, i);
 	}
 	return 0;
 }
