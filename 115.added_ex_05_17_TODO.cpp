@@ -1,57 +1,261 @@
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
-const int righe = 12;
-const int colonne = 12;
-
-//I will make it 12x12 so i don't have to deal with edges
-
-int check_cell(const int a[][colonne], int riga, int colonna) {
-	int oriz[] = {-1, -1, -1, 0, 0, 1, 1, 1};
-	int vert[] = {-1, 0, 1, -1, 1, -1, 0, 1};
-	for (int i = 0; i < 8; i++) {
-		if (a[riga+oriz[i]][colonna+vert[i]] == 1)
-			return 0;
-	}
-	cout << "(" << riga << ", " << colonna << ")" << endl;
-	return 1;
-}
-
-int main() {
-	int a[righe][colonne];
-	srand(time(NULL));
-	for (int i = 1; i < righe-1; i++) {
-		for (int j = 1; j < colonne-1; j++) {
-			a[i][j] = random()%2;
-		}
-	}
-	for (int i = 0; i < righe; i++) {
-		a[i][0] = 0;
-		a[i][colonne-1] = 0;
-	}
-	for (int i = 0; i < colonne; i++) {
-		a[0][i] = 0;
-		a[righe-1][i] = 0;
-	}
-	//I am rewriting corners but whatever
-	for (int i = 1; i < righe-1; i++) {
-		for (int j = 1; j < colonne-1; j++) {
-			cout << a[i][j] << " "; 
+void drawGrid(int grid[][6]) {
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 6; j++) {
+			if (grid[i][j] == 0) {
+				cout << "- ";
+			} else if (grid[i][j] == 1) {
+				cout << "□ ";
+			} else if (grid[i][j] == 2) {
+				cout << "X ";
+			} else if (grid[i][j] == -1) {
+				cout << "O ";
+			}
 		}
 		cout << endl;
 	}
-	cout << endl;
-	int islands = 0;
-	for (int i = 1; i < righe-1; i++) {
-		for (int j = 1; j < colonne-1; j++) {
-			if (a[i][j]==1)
-				islands += check_cell(a, i, j);
+}
+
+void setupGridTries(int grid[][6]) {
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 6; j++) {
+			grid[i][j] = 0;
 		}
 	}
-	if (islands == 1) 
-		cout << "There is 1 'island'." << endl;
-	else
-		cout << "There are " << islands << " 'islands'." << endl;
+}
+
+void setupGrid(int grid[][6]) {
+	//setting it to 0s
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 6; j++) {
+			grid[i][j] = 0;
+		}
+	}
+	//I will draw 2 boats: one of length 2 and the other with length 3
+	int x1, y1; //coordinates of first boat
+	int orientation1 = random()%2;
+	if (orientation1 == 0) { //horiz
+		x1 = random()%5;
+		y1 = random()%6;
+		grid[y1][x1] = 1;
+		grid[y1][x1+1] = 1;
+	} else { //vert
+		x1 = random()%6;
+		y1 = random()%5;
+		grid[y1][x1] = 1;
+		grid[y1+1][x1] = 1;
+	}
+
+	int x2, y2; //coordinates of second boat
+	bool notPlaced = true; //gotta while, since the two boats could cross each other
+	int orientation2;
+	while (notPlaced) {
+		notPlaced = false;
+		orientation2 = random()%2;
+		if (orientation2 == 0) { //horiz
+			x2 = random()%4;
+			y2 = random()%6;
+			for (int i = 0; i < 3; i++) {
+				if (grid[y2][x2+i] == 1) notPlaced = true;
+			}
+		} else { //vert
+			x2 = random()%6;
+			y2 = random()%4;
+			for (int i = 0; i < 3; i++) {
+				if (grid[y2+i][x2] == 1) notPlaced = true;
+			}
+		}
+		if (!notPlaced) {
+			if (orientation2 == 0) {
+				grid[y2][x2] = 1;
+				grid[y2][x2+1] = 1;
+				grid[y2][x2+2] = 1;
+			} else {
+				grid[y2][x2] = 1;
+				grid[y2+1][x2] = 1;
+				grid[y2+2][x2] = 1;
+			}
+		}
+
+	}
+
+
+}
+
+int main() {
+	srand(time(NULL));
+	char bin[1000];
+	int grid1[6][6];
+	int grid2[6][6];
+	int gridTries1[6][6];
+	int gridTries2[6][6];
+	setupGrid(grid1);
+	setupGrid(grid2);
+	setupGridTries(gridTries1);
+	setupGridTries(gridTries2);
+	cout << "P1:" << endl;
+	drawGrid(grid1);
+	cout << "Enter anything when you are ready." << endl;
+	cin >> bin;
+	for (int i = 0; i < 100; i++) cout << endl;
+	cout << "Give the screen to P2. Enter anything if you are P2." << endl;
+	cin >> bin;
+	for (int i = 0; i < 100; i++) cout << endl;
+	cout << endl << "P2:" << endl;
+	drawGrid(grid2);
+	cout << endl;
+	cout << "Enter anything when you are ready." << endl;
+	cin >> bin;
+	for (int i = 0; i < 100; i++) cout << endl;
+	cout << "Give the screen to P1. Enter anything if you are P1." << endl;
+	cin >> bin;
+	for (int i = 0; i < 100; i++) cout << endl;
+
+	bool gameAlive = true;
+	while (gameAlive) {
+		int x, y;
+		cout << "P1's turn." << endl;
+		cout << "Your grid:" << endl;
+		drawGrid(grid1);
+		cout << "Your tries:" << endl;
+		drawGrid(gridTries1);
+		cout << endl;
+		bool choice1 = false;
+		while(!choice1) {
+			cout << "Tell me the cell you want to shoot at.";
+			cout << "x) ";
+			cin >> x;
+			if (cin.fail()) {
+				cout << "Not a valid number." << flush << endl;
+				cin.clear();
+				cin.ignore(1000000, '\n');
+				x = -1;
+			}
+			if (x < 0 || x > 5) {
+				cout << "x out of range." << endl;
+			} else choice1 = true;
+			bool choice2 = true;
+			if (choice1) choice2 = false;
+			while(!choice2) {
+				cout << "y) ";
+				cin >> y;
+				if (cin.fail()) {
+					cout << "Not a valid number." << flush << endl;
+					cin.clear();
+					cin.ignore(1000000, '\n');
+					y = -1;
+				}
+				if (y < 0 || y > 5) {
+					cout << "y out of range." << endl;
+				} else if (gridTries1[y][x]!=0) {
+					cout << "You have already tried there!" << endl;
+					choice1 = false;
+					choice2 = true;
+				} else {
+					choice2 = true;
+				}
+			}
+			if (choice1) {
+				if (grid2[y][x] == 1) {
+					cout << "HIT!" << endl;
+					grid2[y][x] = 2;
+					gridTries1[y][x] = 2;
+				} else if (grid2[y][x] == 0) {
+					cout << "Nothing hit." << endl;
+					grid2[y][x] = -1;
+					gridTries1[y][x] = -1;
+				}
+			}
+		}
+		cout << "Enter anything when you are done." << endl;
+		cin >> bin;
+		for (int i = 0; i < 100; i++) cout << endl;
+		cout << "Give the screen to P2. Enter anything if you are P2." << endl;
+		cin >> bin;
+		for (int i = 0; i < 100; i++) cout << endl;
+		cout << "P2's turn." << endl;
+		cout << "Your grid:" << endl;
+		drawGrid(grid2);
+		cout << "Your tries:" << endl;
+		drawGrid(gridTries2);
+		cout << endl;
+		bool choice1 = false;
+		while(!choice1) {
+			cout << "Tell me the cell you want to shoot at.";
+			cout << "x) ";
+			cin >> x;
+			if (cin.fail()) {
+				cout << "Not a valid number." << flush << endl;
+				cin.clear();
+				cin.ignore(1000000, '\n');
+				x = -1;
+			}
+			if (x < 0 || x > 5) {
+				cout << "x out of range." << endl;
+			} else choice1 = true;
+			bool choice2 = true;
+			if (choice1) choice2 = false;
+			while(!choice2) {
+				cout << "y) ";
+				cin >> y;
+				if (cin.fail()) {
+					cout << "Not a valid number." << flush << endl;
+					cin.clear();
+					cin.ignore(1000000, '\n');
+					y = -1;
+				}
+				if (y < 0 || y > 5) {
+					cout << "y out of range." << endl;
+				} else if (gridTries2[y][x]!=0) {
+					cout << "You have already tried there!" << endl;
+					choice1 = false;
+					choice2 = true;
+				} else {
+					choice2 = true;
+				}
+			}
+			if (choice1) {
+				if (grid1[y][x] == 1) {
+					cout << "HIT!" << endl;
+					grid1[y][x] = 2;
+					gridTries2[y][x] = 2;
+				} else if (grid1[y][x] == 0) {
+					cout << "Nothing hit." << endl;
+					grid1[y][x] = -1;
+					gridTries2[y][x] = -1;
+				}
+			}
+		}
+		cout << "Enter anything when you are done." << endl;
+		cin >> bin;
+		for (int i = 0; i < 100; i++) cout << endl;
+		cout << "Give the screen to P1. Enter anything if you are P1." << endl;
+		cin >> bin;
+		for (int i = 0; i < 100; i++) cout << endl;
+	}
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
