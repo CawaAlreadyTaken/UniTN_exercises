@@ -3,6 +3,28 @@
 
 using namespace std;
 
+void drawGrid(int grid[][6]);
+
+void checkWin(int grid[][6], int Player, int grid1[][6], int grid2[][6]) {
+	bool won = true;
+	for (int i = 0; i < 6 && won; i++) {
+		for (int j = 0; j < 6 && won; j++) {
+			if (grid[i][j] == 1)
+				won = false;
+		}
+	}	
+	if (won) {
+		cout << "P" << Player << " WON!" << endl;
+		cout << "P1:" << endl;
+		drawGrid(grid1);
+		cout << "P2:" << endl;
+		drawGrid(grid2);
+		exit(0); //I mean ok i should not use exit here, but as far as my goal is to make the code more readable, i think this 
+					//actually IS the cleanest way. I am going to cry during the exam. Also, have a nice day.
+	}
+
+}
+
 void drawGrid(int grid[][6]) {
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
@@ -124,9 +146,10 @@ int main() {
 		cout << "Your tries:" << endl;
 		drawGrid(gridTries1);
 		cout << endl;
+		cout << "'X' means HIT there, while 'O' means there was a try but it failed." << endl;
 		bool choice1 = false;
 		while(!choice1) {
-			cout << "Tell me the cell you want to shoot at.";
+			cout << "Tell me the cell you want to shoot at." << endl;
 			cout << "x) ";
 			cin >> x;
 			if (cin.fail()) {
@@ -171,6 +194,7 @@ int main() {
 				}
 			}
 		}
+		checkWin(grid2, 1, grid1, grid2);
 		cout << "Enter anything when you are done." << endl;
 		cin >> bin;
 		for (int i = 0; i < 100; i++) cout << endl;
@@ -183,9 +207,10 @@ int main() {
 		cout << "Your tries:" << endl;
 		drawGrid(gridTries2);
 		cout << endl;
-		bool choice1 = false;
+		choice1 = false;
+		cout << "'X' means HIT there, while 'O' means there was a try but it failed." << endl;
 		while(!choice1) {
-			cout << "Tell me the cell you want to shoot at.";
+			cout << "Tell me the cell you want to shoot at." << endl;
 			cout << "x) ";
 			cin >> x;
 			if (cin.fail()) {
@@ -230,6 +255,7 @@ int main() {
 				}
 			}
 		}
+		checkWin(grid1, 2, grid1, grid2);
 		cout << "Enter anything when you are done." << endl;
 		cin >> bin;
 		for (int i = 0; i < 100; i++) cout << endl;
