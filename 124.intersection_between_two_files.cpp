@@ -14,8 +14,6 @@ int main(int argc, char * argv[]) {
 	}
 	fstream in1, in2, out;
 	in1.open(argv[1], ios::in);
-	in2.open(argv[2], ios::in);
-	out.open(argv[3], ios::out);
 
 	char words1[1000][100];
 	char words2[1000][100];
@@ -25,29 +23,31 @@ int main(int argc, char * argv[]) {
 	if (in1.fail()) {
 		cout << "Failed to read '" << argv[1] << "'." << endl;
 		in1.close();
-		in2.close();
-		out.close();
 		exit(0);
 	}
 	while (!in1.eof()) {
 		in1>>words1[it1];
 		it1++;
 	}
+	in1.close();
+
+
+	in2.open(argv[2], ios::in);
 	int it2 = 1;
 	in2 >> words2[0];
 	if (in2.fail()) {
 		cout << "Failed to read '" << argv[2] << "'." << endl;
-		in1.close();
 		in2.close();
-		out.close();
 		exit(0);
 	}
 	while (!in2.eof()) {
 		in2>>words2[it2];
 		it2++;
 	}
+	in2.close();
 
 	cout << "Into the file '" << argv[3] << "', you will find the list of the words that are both in '" << argv[1] << "' and in '" << argv[2] << "'." << endl;
+	out.open(argv[3], ios::out);
 	int it3 = 0;
 	char output[1000][100];
 	for (int i = 0; i < it1; i++) {
@@ -65,8 +65,6 @@ int main(int argc, char * argv[]) {
 			out << output[i] << endl;
 	}
 
-	in1.close();
-	in2.close();
 	out.close();
 	return 0;
 }
