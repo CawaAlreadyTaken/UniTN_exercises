@@ -27,12 +27,18 @@ void deleteList(list lista) {
 	}
 }
 
-void insert(list lista, int n, int v) {
+void insert(list &lista, int n, int v) {
+	if (v == 0) {
+		list new_ = new node{n, lista};
+		lista = new_;
+		return;
+	}
+	list tmp = lista;
 	while (--v) {
-		lista = lista->next;
+		tmp = tmp->next;
 	}	
-	list new_ = new node{n, lista->next};
-	lista->next = new_;
+	list new_ = new node{n, tmp->next};
+	tmp->next = new_;
 }
 
 int main(int argc, char * argv[]) {
@@ -67,8 +73,8 @@ int main(int argc, char * argv[]) {
 	int n; cin >> n;
 	cout << "v: ";
 	int v; cin >> v;
-	if (v < 1) {
-		cout << "Error: v <= 0." << endl;
+	if (v < 0) {
+		cout << "Error: v < 0." << endl;
 		exit(-1);
 	}
 	if (v > list_size) {
