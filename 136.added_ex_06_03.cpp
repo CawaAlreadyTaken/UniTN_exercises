@@ -48,9 +48,9 @@ void remove(list &lista, int n) {
 		}
 		tmp = tmp->next;
 	} 
-	delete tmp;
 	//it doesn't free memory here
 	cout << "Could not find element " << n << endl;
+	deleteList(lista);
 	exit(-1);
 }
 
