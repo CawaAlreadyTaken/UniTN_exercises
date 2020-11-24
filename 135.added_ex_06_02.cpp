@@ -6,6 +6,7 @@ using namespace std;
 struct node{
 	int a;
 	node * next;
+	node * previous;
 };
 
 typedef node* list;
@@ -27,17 +28,8 @@ void deleteList(list lista) {
 	}
 }
 
-void insert(list lista, int n, int v) {
-	while (--v) {
-		lista = lista->next;
-	}	
-	list new_ = new node{n, lista->next};
-	lista->next = new_;
-}
-
 int main(int argc, char * argv[]) {
 	int i;
-	int list_size = 1;
 	if (argc != 2) {
 		cout << "Usage: " << argv[0] << " <inputFile>" << endl;
 		exit(-1);
@@ -50,36 +42,17 @@ int main(int argc, char * argv[]) {
 		in.close();
 		exit(-1);
 	}
-	list lista = new node{i, NULL};
+	list lista = new node{i, NULL, NULL};
 	list current = lista;
 	while(in >> i) {
-		list_size++;
-		list nextNode = new node{i, NULL};
+		list nextNode = new node{i, NULL, NULL};
 		current->next = nextNode;
+		nextNode->previous = current;
 		current = nextNode;
 	}
 	in.close();
 
 	printList(lista);
-
-	cout << "Give me n, the number I have to insert, and v, the index at which n will be inserted." << endl;
-	cout << "n: ";
-	int n; cin >> n;
-	cout << "v: ";
-	int v; cin >> v;
-	if (v < 1) {
-		cout << "Error: v <= 0." << endl;
-		exit(-1);
-	}
-	if (v > list_size) {
-		cout << "Error: v can't be greater than the list size." << endl;
-		exit(-1);
-	}
-
-	insert(lista, n, v);
-
-	printList(lista);
-
 	deleteList(lista);
 
 	return 0;

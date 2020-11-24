@@ -26,8 +26,7 @@ int main(int argc, char * argv[]) {
 	}
 	list lista = new node{i, NULL};
 	list current = lista;
-	while(!in.eof()) {
-		in >> i;
+	while(in >> i) {
 		list nextNode = new node{i, NULL};
 		current->next = nextNode;
 		current = nextNode;

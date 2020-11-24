@@ -27,12 +27,31 @@ void deleteList(list lista) {
 	}
 }
 
-void insert(list lista, int n, int v) {
-	while (--v) {
+void remove(list &lista, int n) {
+	if (lista->a == n) {
+		list tmp = lista;
 		lista = lista->next;
-	}	
-	list new_ = new node{n, lista->next};
-	lista->next = new_;
+		delete tmp;
+		return;
+	}
+	list tmp = lista;
+	while (tmp->next != NULL) {
+		if (tmp->next->a == n) {
+			list tmp1 = tmp->next;
+			if (tmp->next->next != NULL) {
+				tmp->next = tmp->next->next;
+			} else {
+				tmp->next = NULL;
+			}
+			delete tmp1;
+			return;
+		}
+		tmp = tmp->next;
+	} 
+	delete tmp;
+	//it doesnt freaking free memory here
+	cout << "Could not find element " << n << endl;
+	exit(-1);
 }
 
 int main(int argc, char * argv[]) {
@@ -62,21 +81,10 @@ int main(int argc, char * argv[]) {
 
 	printList(lista);
 
-	cout << "Give me n, the number I have to insert, and v, the index at which n will be inserted." << endl;
-	cout << "n: ";
+	cout << "Give me the number to remove: ";
 	int n; cin >> n;
-	cout << "v: ";
-	int v; cin >> v;
-	if (v < 1) {
-		cout << "Error: v <= 0." << endl;
-		exit(-1);
-	}
-	if (v > list_size) {
-		cout << "Error: v can't be greater than the list size." << endl;
-		exit(-1);
-	}
 
-	insert(lista, n, v);
+	remove(lista, n);
 
 	printList(lista);
 
