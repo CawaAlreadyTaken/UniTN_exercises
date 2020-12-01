@@ -1,6 +1,6 @@
 # UniTN_exercises:
 
 Here i am just posting all the exercises we were given to do during practical lessons.
-Nothing useful, cy@.
+Nothing useful.
 
-PS: Exercises are in chronological order.
+Exercises are in chronological order.
