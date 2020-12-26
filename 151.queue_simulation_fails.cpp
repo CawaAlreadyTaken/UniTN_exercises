@@ -17,7 +17,7 @@ int main(int argc, char * argv[]) {
 	fstream in;
 	in.open(argv[1], ios::in);
 	if (in.fail()) {
-		cout << "[!] File " << argv[0] << " not found." << endl;
+		cout << "[!] File " << argv[1] << " not found." << endl;
 		in.close();
 		exit(-1);
 	}
@@ -26,12 +26,9 @@ int main(int argc, char * argv[]) {
 
 	init_q();
 
-	char * name = new char[100];
+	char name[100];
 	while (in >> name) {
 		enqueue(name);
-		print();
-		cout << endl;
-		cout << endl;
 	}
 	in.close();
 
@@ -59,7 +56,6 @@ int main(int argc, char * argv[]) {
 			cout << "[!] Unavailable choice." << endl;
 		}
 	}
-
 	return 0;
 }
 

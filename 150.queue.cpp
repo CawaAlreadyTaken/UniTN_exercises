@@ -1,4 +1,5 @@
 #include "150.queue.h"
+#include <cstring>
 
 static coda Q;
 
@@ -21,7 +22,9 @@ bool enqueue(char * n) {
         risultatoOperazione = false;
     }
     else {
-        nuovoNodo->nome=n;
+		  char * name = new char[100];
+		  strcpy(name, n);
+		  nuovoNodo->nome = name;
         nuovoNodo->next=NULL;
         if (vuota()) {
             Q.head=nuovoNodo;
